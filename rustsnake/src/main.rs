@@ -5,9 +5,7 @@ mod board;
 use snake::Snake;
 use board::Board;
 
-use std::{
-    cell, io::{self, Write}, thread, vec
-};
+use std::thread;
 
 
 // "C:\Windows\System32\downlevel\api-ms-win-crt-conio-l1-1-0.dll"
@@ -54,7 +52,7 @@ fn main() {
             // let _ = io::stdout().flush();
         }
         
-        println!("----------{}----------", ch);
+        println!("food at: ({}, {}), {}", board.food.0, board.food.1, ch);
         snake.try_eat();
         board.draw(&mut snake);
         snake.tick();

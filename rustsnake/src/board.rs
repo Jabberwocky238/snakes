@@ -2,7 +2,7 @@ use crate::snake::Snake;
 
 pub struct Board {
     board: Vec<Vec<char>>,
-    food: (usize, usize),
+    pub food: (usize, usize),
 }
 
 pub const ROW: usize = 20;
@@ -24,13 +24,15 @@ impl Board {
         self.board
             .iter_mut()
             .enumerate()
-            .for_each(|(index_x, row)| {
-                row.iter_mut().enumerate().for_each(|(index_y, cell)| {
-                    if index_x == 0 || index_x == 19 || index_y == 0 || index_y == 39 {
+            .for_each(|(row_pos, row)| {
+                row.iter_mut().enumerate().for_each(|(col_pos, cell)| {
+                    if row_pos == 0 && col_pos == 0 {
+                        *cell = '0'
+                    } else if row_pos == 0 || row_pos == ROW - 1 || col_pos == 0 || col_pos == COLUMN - 1 {
                         *cell = '+'
-                    } else if snake.body.contains(&(index_x, index_y)) {
+                    } else if snake.body.contains(&(row_pos, col_pos)) {
                         *cell = 'X'
-                    } else if self.food == (index_x, index_y) {
+                    } else if self.food == (row_pos, col_pos) {
                         *cell = '@'
                     } else {
                         *cell = ' '
@@ -46,8 +48,8 @@ impl Board {
 
     fn make_food(&mut self) {
         self.food = (
-            rand::random::<usize>() % COLUMN,
-            rand::random::<usize>() % ROW,
+            rand::random::<usize>() % (ROW - 2) + 1,
+            rand::random::<usize>() % (COLUMN - 2) + 1,
         );
         println!("new food: ({}, {})", self.food.0, self.food.1);
     }

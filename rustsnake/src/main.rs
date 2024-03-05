@@ -1,12 +1,14 @@
 #![allow(dead_code)]
 
 mod snake;
+mod board;
+use snake::Snake;
+use board::Board;
 
 use std::{
     cell, io::{self, Write}, thread, vec
 };
 
-use snake::Snake;
 
 // "C:\Windows\System32\downlevel\api-ms-win-crt-conio-l1-1-0.dll"
 // C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\conio.h
@@ -30,11 +32,10 @@ pub fn kbhit() -> bool {
     unsafe { _kbhit() }
 }
 
-const ROW: usize = 20;
-const COLUMN: usize = 40;
+
 
 fn main() {
-    let mut board = vec![vec![' '; COLUMN]; ROW];
+    let mut board = Board::new();
     let mut snake = Snake::new();
     let mut ch: char = 'a';
 
@@ -52,14 +53,11 @@ fn main() {
             // let _ = io::stdout().write(&[ch]);
             // let _ = io::stdout().flush();
         }
-        snake.tick();
-        snake.draw(&mut board);
-
+        
         println!("----------{}----------", ch);
-        board.iter().for_each(|row| {
-            row.iter().for_each(|cell| print!("{}", cell));
-            print!("\n");
-        });
+        snake.try_eat();
+        board.draw(&mut snake);
+        snake.tick();
 
         let duration = std::time::Duration::from_millis(200);
         thread::sleep(duration);

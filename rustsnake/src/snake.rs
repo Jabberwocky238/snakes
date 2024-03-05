@@ -1,10 +1,13 @@
-use rand::random;
 
 pub struct Snake {
     /// head = body[0]
     pub body: Vec<(usize, usize)>,
     /// y, x
     pub direction: (i32, i32),
+    /// head towards
+    pub head_to: (usize, usize),
+    /// 吃了吗
+    pub lengthen: bool,
 }
 
 impl Snake {
@@ -12,13 +15,21 @@ impl Snake {
         Snake {
             body: vec![(10, 10), (9, 10), (8, 10)],
             direction: (0, 1),
+            head_to: (10, 10),
+            lengthen: false,
         }
+    }
+
+    pub fn try_eat(&mut self){
+        self.head_to = self.body[0];
     }
 
     pub fn tick(&mut self){
         let head = self.body[0];
+        let tail = self.body.last().unwrap().clone();
         let mut before = head.clone();
         let mut after = head.clone();
+
         self.body.iter_mut().for_each(|block|{
             after = block.clone();
             *block = before.clone();
@@ -34,25 +45,14 @@ impl Snake {
             -1 => self.body[0].1 -= 1,
             _ => {}
         }
+        
+        if self.lengthen {
+            self.body.push(tail);
+            self.lengthen = false;
+        }
     }
 
-    pub fn draw(&self, board: &mut Vec<Vec<char>>) {
-        board.iter_mut().enumerate().for_each(|(index_x, row)| {
-            row.iter_mut()
-                .enumerate()
-                .for_each(|(index_y, cell)| {
-                    if index_x == 0 || index_x == 19 || index_y == 0 || index_y == 39 {
-                        *cell = '+'
-                    }
-                    else if self.body.contains(&(index_x, index_y)) {
-                        *cell = 'X'
-                    }
-                    else {
-                        *cell = ' '
-                    }
-                })
-        });
-    }
+    
 
     pub fn up(&mut self) {
         self.direction.1 = 0;

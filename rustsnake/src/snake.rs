@@ -14,6 +14,7 @@ impl Snake {
             direction: (0, 1),
         }
     }
+
     pub fn tick(&mut self){
         let head = self.body[0];
         let mut before = head.clone();
@@ -40,7 +41,10 @@ impl Snake {
             row.iter_mut()
                 .enumerate()
                 .for_each(|(index_y, cell)| {
-                    if self.body.contains(&(index_x, index_y)) {
+                    if index_x == 0 || index_x == 19 || index_y == 0 || index_y == 39 {
+                        *cell = '+'
+                    }
+                    else if self.body.contains(&(index_x, index_y)) {
                         *cell = 'X'
                     }
                     else {

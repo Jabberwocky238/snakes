@@ -30,8 +30,11 @@ pub fn kbhit() -> bool {
     unsafe { _kbhit() }
 }
 
+const ROW: usize = 20;
+const COLUMN: usize = 40;
+
 fn main() {
-    let mut board = vec![vec![' '; 20]; 20];
+    let mut board = vec![vec![' '; COLUMN]; ROW];
     let mut snake = Snake::new();
     let mut ch: char = 'a';
 
@@ -57,7 +60,6 @@ fn main() {
             row.iter().for_each(|cell| print!("{}", cell));
             print!("\n");
         });
-        println!("--------------------");
 
         let duration = std::time::Duration::from_millis(200);
         thread::sleep(duration);

@@ -55,7 +55,10 @@ fn main() {
         println!("food at: ({}, {}), {}", board.food.0, board.food.1, ch);
         snake.try_eat();
         board.draw(&mut snake);
-        snake.tick();
+        if let Some(_) = snake.tick() {
+            println!("game over!");
+            return;
+        }
 
         let duration = std::time::Duration::from_millis(200);
         thread::sleep(duration);

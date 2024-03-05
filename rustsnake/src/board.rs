@@ -47,9 +47,10 @@ impl Board {
     }
 
     fn make_food(&mut self) {
+        let border = 5;
         self.food = (
-            rand::random::<usize>() % (ROW - 2) + 1,
-            rand::random::<usize>() % (COLUMN - 2) + 1,
+            rand::random::<usize>() % (ROW - border * 2) + border,
+            rand::random::<usize>() % (COLUMN - border * 2) + border,
         );
         println!("new food: ({}, {})", self.food.0, self.food.1);
     }

@@ -10,6 +10,9 @@ pub struct Snake {
     pub lengthen: bool,
 }
 
+use crate::board::COLUMN;
+use crate::board::ROW;
+
 impl Snake {
     pub fn new() -> Self {
         Snake {
@@ -24,7 +27,7 @@ impl Snake {
         self.head_to = self.body[0];
     }
 
-    pub fn tick(&mut self){
+    pub fn tick(&mut self) -> Option<i32>{
         let head = self.body[0];
         let tail = self.body.last().unwrap().clone();
         let mut before = head.clone();
@@ -45,11 +48,16 @@ impl Snake {
             -1 => self.body[0].1 -= 1,
             _ => {}
         }
+
+        if self.body[0].0 == 0 || self.body[0].0 == ROW - 1 || self.body[0].1 == 0 || self.body[0].1 == COLUMN - 1 {
+            return Some(1);
+        }
         
         if self.lengthen {
             self.body.push(tail);
             self.lengthen = false;
         }
+        None
     }
 
     

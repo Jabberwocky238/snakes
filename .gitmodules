@@ -1,0 +1,6 @@
+[submodule "cppsnake"]
+	path = cppsnake
+	url = git@github.com:Jabberwocky238/cppsnake.git
+[submodule "rustsnake"]
+	path = rustsnake
+	url = git@github.com:Jabberwocky238/rustsnake.git
